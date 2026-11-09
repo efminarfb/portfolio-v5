@@ -241,6 +241,40 @@
   .portrait img{width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;object-position:50% 38%}
   .portrait figcaption{position:absolute;left:0;right:0;bottom:0;padding:1rem 1.1rem;font-family:var(--mono);font-size:.625rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(242,239,232,.7);background:linear-gradient(180deg,transparent,rgba(10,10,9,.85))}
 
+
+  /* enquiry form */
+  .lead{margin-top:clamp(2rem,5vw,3.25rem);padding-top:clamp(1.5rem,3vw,2rem);border-top:1px solid var(--line)}
+  .lead-head{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:clamp(1rem,2.4vw,1.5rem)}
+  .lead-sub{color:var(--muted);font-size:.9375rem}
+  .lead-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.1rem 1.75rem}
+  .fld{display:grid;gap:.45rem;min-width:0}
+  .fld.wide{grid-column:1 / -1}
+  .fld > span{font-family:var(--mono);font-size:.625rem;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+  .fld input,.fld select,.fld textarea{
+    width:100%;background:transparent;color:var(--fg);font-family:inherit;font-size:.9375rem;
+    border:0;border-bottom:1px solid var(--line);padding:.55rem 0;border-radius:0;
+    transition:border-color .25s ease;
+  }
+  .fld textarea{resize:vertical;min-height:78px;line-height:1.5}
+  .fld select{
+    appearance:none;-webkit-appearance:none;padding-right:1.4rem;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none' stroke='%23F2EFE8' stroke-width='1.4'%3E%3Cpath d='M1 1.5 6 6.5l5-5'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;background-position:right .2rem center;
+  }
+  .fld input::placeholder,.fld textarea::placeholder{color:rgba(242,239,232,.28)}
+  .fld input:focus,.fld select:focus,.fld textarea:focus{outline:none;border-color:var(--accent)}
+  .fld option{background:#121110;color:var(--fg)}
+  .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none}
+  .lead-foot{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-top:clamp(1.1rem,2.4vw,1.6rem)}
+  .lead-note{font-size:.8125rem;color:var(--muted);margin:0;min-height:1.2em}
+  .lead-note.err{color:#FF9A7B}
+  .lead-note.ok{color:#C6F08A}
+  .lead-thanks{display:none;font-family:var(--serif);font-size:clamp(1.3rem,2.6vw,1.9rem);line-height:1.25;max-width:30ch}
+  .lead.sent .lead-grid,.lead.sent .lead-foot,.lead.sent .lead-head{display:none}
+  .lead.sent .lead-thanks{display:block}
+  button.pill[disabled]{opacity:.5;cursor:not-allowed;transform:none}
+  @media (max-width:640px){ .lead-grid{grid-template-columns:1fr} }
+
   /* contact */
   .contact{border-top:1px solid var(--line);padding:clamp(4rem,11vh,9rem) 0 clamp(2rem,5vh,4rem)}
   .contact .big{
@@ -416,6 +450,44 @@
     <p class="mono" data-reveal><span class="dot"></span>04 — Start here</p>
     <a class="big" href="mailto:efminardb@gmail.com?subject=Website%20project&body=Hi%20Sadaf%2C%0A%0AAbout%20my%20business%3A%20%0AWhat%20I%20need%3A%20%0ATimeline%3A%20%0ABudget%3A%20%0A" data-reveal style="--d:.08s">Tell me what<br>you're <em>building.</em></a>
 
+    <form class="lead" id="lead" novalidate>
+      <div class="lead-head">
+        <p class="mono">Or leave the details here</p>
+        <p class="lead-sub">Two lines is enough. I answer within a day.</p>
+      </div>
+      <div class="lead-grid">
+        <label class="fld"><span>Name</span>
+          <input type="text" name="name" autocomplete="name" maxlength="120" required>
+        </label>
+        <label class="fld"><span>Email</span>
+          <input type="email" name="email" autocomplete="email" maxlength="200" required>
+        </label>
+        <label class="fld"><span>Business</span>
+          <input type="text" name="business" autocomplete="organization" maxlength="160" placeholder="Optional">
+        </label>
+        <label class="fld"><span>Budget</span>
+          <select name="budget">
+            <option value="">Not sure yet</option>
+            <option>Under ৳15,000 / $150</option>
+            <option>৳15,000–35,000 / $150–350</option>
+            <option>৳35,000–80,000 / $350–800</option>
+            <option>Above that</option>
+          </select>
+        </label>
+        <label class="fld wide"><span>What are you building?</span>
+          <textarea name="message" rows="3" maxlength="4000" required placeholder="What it does, who it's for, and when you need it."></textarea>
+        </label>
+      </div>
+      <input class="hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <div class="lead-foot">
+        <button class="pill" type="submit">Send enquiry
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
+        </button>
+        <p class="lead-note" id="lead-note" role="status" aria-live="polite"></p>
+      </div>
+      <p class="lead-thanks">Got it. I'll reply from efminardb@gmail.com, usually the same day.</p>
+    </form>
+
     <div class="contact-meta" data-reveal style="--d:.16s">
       <div>
         <span class="mono">Email</span>
@@ -519,6 +591,64 @@
           start();
         });
         row.addEventListener("mouseleave", function () { over = false; pv.classList.remove("on"); });
+      });
+    }
+
+    // enquiry form — posts to the Vercel function, or straight to Supabase elsewhere
+    var form = document.getElementById("lead");
+    if (form) {
+      var SUPABASE = "https://bhcjdtynafnedgxjusgw.supabase.co";
+      var ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJoY2pkdHluYWZuZWRneGp1c2d3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAzMjE4NzEsImV4cCI6MjEwNTg5Nzg3MX0._UzdeXpD7qpUfi9TL0jDTuB38vOJwc5YOgTAUCeXg1E";
+      var viaFunction = /(^|\.)vercel\.app$/.test(location.hostname) || location.hostname === "localhost";
+      var note = document.getElementById("lead-note");
+      var btn = form.querySelector('button[type="submit"]');
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        if (!note || !btn) return;
+        var raw = {};
+        new FormData(form).forEach(function (v, k) { raw[k] = typeof v === "string" ? v : ""; });
+        var lead = {
+          name: raw.name, email: raw.email, business: raw.business, budget: raw.budget,
+          message: raw.message, page: location.pathname, source: "portfolio-v5", company: raw.company
+        };
+        var request = viaFunction
+          ? { url: "/api/lead", body: lead,
+              headers: { "Content-Type": "application/json" } }
+          : { url: SUPABASE + "/rest/v1/portfolio_leads",
+              body: { name: lead.name, email: lead.email, business: lead.business, budget: lead.budget,
+                      message: lead.message, page: lead.page, source: lead.source },
+              headers: { apikey: ANON, Authorization: "Bearer " + ANON,
+                         "Content-Type": "application/json", Prefer: "return=minimal" } };
+
+        note.className = "lead-note";
+        note.textContent = "Sending…";
+        btn.disabled = true;
+
+        fetch(request.url, {
+          method: "POST",
+          headers: request.headers,
+          body: JSON.stringify(request.body)
+        }).then(function (r) {
+          return r.text().then(function (text) {
+            var parsed = null;
+            try { parsed = text ? JSON.parse(text) : null; } catch (err) { parsed = null; }
+            return { ok: r.ok && (!parsed || parsed.ok !== false), body: parsed };
+          });
+        }).then(function (res) {
+          if (res.ok) {
+            form.classList.add("sent");
+            if (note) { note.className = "lead-note ok"; note.textContent = ""; }
+            return;
+          }
+          note.className = "lead-note err";
+          note.textContent = (res.body && res.body.error) || "Something went wrong. Email me instead.";
+          btn.disabled = false;
+        }).catch(function () {
+          note.className = "lead-note err";
+          note.textContent = "No connection. Email me instead.";
+          btn.disabled = false;
+        });
       });
     }
   })();
