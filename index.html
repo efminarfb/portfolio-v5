@@ -625,11 +625,31 @@
         note.textContent = "Sending…";
         btn.disabled = true;
 
+        var directRequest = { url: SUPABASE + "/rest/v1/portfolio_leads",
+          body: { name: lead.name, email: lead.email, business: lead.business, budget: lead.budget,
+                  message: lead.message, page: lead.page, source: lead.source },
+          headers: { apikey: ANON, Authorization: "Bearer " + ANON,
+                     "Content-Type": "application/json", Prefer: "return=minimal" } };
+
         fetch(request.url, {
           method: "POST",
           headers: request.headers,
           body: JSON.stringify(request.body)
         }).then(function (r) {
+          // if the serverless endpoint is missing or unconfigured, go straight to the database
+          if (request !== directRequest && (r.status === 404 || r.status === 500 || r.status === 501 || r.status === 502)) {
+            return fetch(directRequest.url, {
+              method: "POST",
+              headers: directRequest.headers,
+              body: JSON.stringify(directRequest.body)
+            }).then(function (r2) {
+              return r2.text().then(function (text) {
+                var parsed = null;
+                try { parsed = text ? JSON.parse(text) : null; } catch (err) { parsed = null; }
+                return { ok: r2.ok && (!parsed || parsed.ok !== false), body: parsed };
+              });
+            });
+          }
           return r.text().then(function (text) {
             var parsed = null;
             try { parsed = text ? JSON.parse(text) : null; } catch (err) { parsed = null; }
